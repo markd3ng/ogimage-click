@@ -23,7 +23,8 @@ self.onmessage = async (e) => {
 
     // 将 PNG buffer 转换为 ImageData
     const pngBuffer = image.asPng()
-    const pngBlob = new Blob([pngBuffer], { type: "image/png" })
+    const arrayBuffer = pngBuffer.buffer.slice(pngBuffer.byteOffset, pngBuffer.byteOffset + pngBuffer.byteLength) as ArrayBuffer
+    const pngBlob = new Blob([arrayBuffer], { type: "image/png" })
     const pngBitmap = await createImageBitmap(pngBlob)
 
     // 绘制到 Canvas
@@ -37,7 +38,9 @@ self.onmessage = async (e) => {
       quality: format === "jpg" ? 0.9 : undefined // JPG 格式设置质量
     })
   } else {
-    blob = new Blob([image.asPng()], { type: "image/png" })
+    const pngData = image.asPng()
+    const arrayBuffer = pngData.buffer.slice(pngData.byteOffset, pngData.byteOffset + pngData.byteLength) as ArrayBuffer
+    blob = new Blob([arrayBuffer], { type: "image/png" })
   }
 
   const url = URL.createObjectURL(blob)
