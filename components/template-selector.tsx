@@ -394,9 +394,8 @@ export default function TemplateSelector() {
           </CarouselContent>
         </RadioGroup>
 
-        {/* Hidden on large screens - users can drag to scroll, last item partially visible as hint */}
-        <CarouselPrevious className="left-2 lg:hidden" variant="secondary" />
-        <CarouselNext className="right-2 lg:hidden" variant="secondary" />
+        <CarouselPrevious className="left-2" variant="secondary" />
+        <CarouselNext className="right-2" variant="secondary" />
       </Carousel>
     </section>
   )
