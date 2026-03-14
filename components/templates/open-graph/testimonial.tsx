@@ -17,12 +17,11 @@ export const Template = ({
       width: template.canvas.width,
       height: template.canvas.height,
       display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
       background: toBackgroundShorthand(template.background),
-      padding: "52px",
+      padding: "60px",
     }}
   >
+    {/* Background effects */}
     <div
       style={{
         height: "100%",
@@ -51,83 +50,168 @@ export const Template = ({
       />
     )}
 
-    <div style={{ display: "flex", justifyContent: "space-between", gap: "42px" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "28px", flex: 1 }}>
-        <div
-          style={{
-            fontFamily: template.params.quote.fontFamily,
-            fontWeight: template.params.quote.fontWeight,
-            fontSize: `${template.params.quote.fontSize}px`,
-            color: template.params.quote.color,
-            lineHeight: "1.35",
-            display: "flex",
-          }}
-        >
-          &ldquo;{template.params.quote.text}&rdquo;
-        </div>
-
-        {template.params.rating.show && (
-          <div style={{ display: "flex", color: template.params.accentColor, fontSize: "28px", gap: "6px" }}>
-            {Array.from({ length: Math.max(1, Math.min(5, Math.round(template.params.rating.score))) }).map((_, index) => (
-              <div key={index} style={{ display: "flex" }}>★</div>
-            ))}
-          </div>
-        )}
-      </div>
-
+    {/* Left sidebar - Author info */}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "280px",
+        gap: "16px",
+        position: "relative",
+        zIndex: 1,
+      }}
+    >
+      {/* Avatar */}
       {template.params.authorAvatar.url && (
         <img
           alt=""
           src={template.params.authorAvatar.url}
-          style={{ width: "170px", height: "170px", borderRadius: "9999px", border: `6px solid ${template.params.accentColor}` }}
+          style={{
+            width: "120px",
+            height: "120px",
+            borderRadius: "9999px",
+            objectFit: "cover",
+          }}
         />
       )}
-    </div>
 
-    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+      {/* Author Name */}
       <div
         style={{
           fontFamily: template.params.authorName.fontFamily,
           fontWeight: template.params.authorName.fontWeight,
           fontSize: `${template.params.authorName.fontSize}px`,
           color: template.params.authorName.color,
+          marginTop: "8px",
         }}
       >
         {template.params.authorName.text}
       </div>
-      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-        <div
-          style={{
-            fontFamily: template.params.authorTitle.fontFamily,
-            fontWeight: template.params.authorTitle.fontWeight,
-            fontSize: `${template.params.authorTitle.fontSize}px`,
-            color: template.params.authorTitle.color,
-          }}
-        >
-          {template.params.authorTitle.text}
-        </div>
-        <div style={{ width: "6px", height: "6px", borderRadius: "9999px", background: template.params.accentColor }} />
-        <div
-          style={{
-            fontFamily: template.params.authorCompany.fontFamily,
-            fontWeight: template.params.authorCompany.fontWeight,
-            fontSize: `${template.params.authorCompany.fontSize}px`,
-            color: template.params.authorCompany.color,
-          }}
-        >
-          {template.params.authorCompany.text}
-        </div>
-      </div>
+
+      {/* Author Title */}
       <div
         style={{
-          marginTop: "10px",
+          fontFamily: template.params.authorTitle.fontFamily,
+          fontWeight: template.params.authorTitle.fontWeight,
+          fontSize: `${template.params.authorTitle.fontSize}px`,
+          color: template.params.authorTitle.color,
+        }}
+      >
+        {template.params.authorTitle.text}
+      </div>
+
+      {/* Author Company (blue) */}
+      <div
+        style={{
+          fontFamily: template.params.authorCompany.fontFamily,
+          fontWeight: template.params.authorCompany.fontWeight,
+          fontSize: `${template.params.authorCompany.fontSize}px`,
+          color: template.params.accentColor,
+        }}
+      >
+        {template.params.authorCompany.text}
+      </div>
+
+      {/* Rating Stars */}
+      {template.params.rating.show && (
+        <div
+          style={{
+            display: "flex",
+            gap: "4px",
+            marginTop: "8px",
+          }}
+        >
+          {Array.from({
+            length: Math.max(1, Math.min(5, Math.round(template.params.rating.score))),
+          }).map((_, index) => (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                color: "#f59e0b",
+                fontSize: "20px",
+              }}
+            >
+              ★
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Spacer to push product name to bottom */}
+      <div style={{ flex: 1 }} />
+
+      {/* Product Name Button */}
+      <div
+        style={{
           fontFamily: template.params.productName.fontFamily,
           fontWeight: template.params.productName.fontWeight,
           fontSize: `${template.params.productName.fontSize}px`,
           color: template.params.productName.color,
+          background: "rgba(59, 130, 246, 0.1)",
+          padding: "12px 24px",
+          borderRadius: "8px",
+          border: `1px solid ${template.params.accentColor}`,
         }}
       >
         {template.params.productName.text}
+      </div>
+    </div>
+
+    {/* Right content - Quote */}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+        paddingLeft: "60px",
+        position: "relative",
+        zIndex: 1,
+      }}
+    >
+      {/* Quote text */}
+      <div
+        style={{
+          fontFamily: template.params.quote.fontFamily,
+          fontWeight: template.params.quote.fontWeight,
+          fontSize: `${template.params.quote.fontSize}px`,
+          color: template.params.quote.color,
+          lineHeight: "1.5",
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        {template.params.quote.text}
+      </div>
+
+      {/* Signature with line */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          marginTop: "20px",
+        }}
+      >
+        <div
+          style={{
+            width: "40px",
+            height: "2px",
+            background: template.params.accentColor,
+          }}
+        />
+        <div
+          style={{
+            fontFamily: template.params.authorName.fontFamily,
+            fontWeight: 500,
+            fontSize: "18px",
+            color: template.params.accentColor,
+          }}
+        >
+          {template.params.authorName.text}
+        </div>
       </div>
     </div>
 
