@@ -376,7 +376,7 @@ export default function TemplateSelector() {
               .map((t) => (
                 <CarouselItem
                   key={t.name}
-                  className="basis-40 md:basis-64 lg:basis-1/5"
+                  className="basis-36 md:basis-56 lg:basis-[18%]"
                 >
                   <RadioGroupItem
                     value={t.name}
@@ -394,7 +394,7 @@ export default function TemplateSelector() {
           </CarouselContent>
         </RadioGroup>
 
-        {/* NOTE: hiding the buttons for large screens for now since we only have 5 templates */}
+        {/* Hidden on large screens - users can drag to scroll, last item partially visible as hint */}
         <CarouselPrevious className="left-2 lg:hidden" variant="secondary" />
         <CarouselNext className="right-2 lg:hidden" variant="secondary" />
       </Carousel>
