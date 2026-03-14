@@ -17,8 +17,10 @@ export const Template = ({
       width: template.canvas.width,
       height: template.canvas.height,
       display: "flex",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
       background: toBackgroundShorthand(template.background),
-      padding: "60px",
+      padding: "60px 80px",
     }}
   >
     {/* Background effects */}
@@ -56,10 +58,8 @@ export const Template = ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        width: "280px",
-        gap: "16px",
-        position: "relative",
-        zIndex: 1,
+        width: "auto",
+        gap: "12px",
       }}
     >
       {/* Avatar */}
@@ -68,10 +68,12 @@ export const Template = ({
           alt=""
           src={template.params.authorAvatar.url}
           style={{
-            width: "120px",
-            height: "120px",
-            borderRadius: "9999px",
+            width: "100px",
+            height: "100px",
+            borderRadius: "50%",
             objectFit: "cover",
+            border: "2px solid #ffffff",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
           }}
         />
       )}
@@ -79,38 +81,41 @@ export const Template = ({
       {/* Author Name */}
       <div
         style={{
+          display: "flex",
           fontFamily: template.params.authorName.fontFamily,
-          fontWeight: template.params.authorName.fontWeight,
-          fontSize: `${template.params.authorName.fontSize}px`,
-          color: template.params.authorName.color,
+          fontWeight: 700,
+          fontSize: "18px",
+          color: "#333333",
           marginTop: "8px",
         }}
       >
         {template.params.authorName.text}
       </div>
 
-      {/* Author Title */}
-      <div
-        style={{
-          fontFamily: template.params.authorTitle.fontFamily,
-          fontWeight: template.params.authorTitle.fontWeight,
-          fontSize: `${template.params.authorTitle.fontSize}px`,
-          color: template.params.authorTitle.color,
-        }}
-      >
-        {template.params.authorTitle.text}
-      </div>
-
-      {/* Author Company (blue) */}
-      <div
-        style={{
-          fontFamily: template.params.authorCompany.fontFamily,
-          fontWeight: template.params.authorCompany.fontWeight,
-          fontSize: `${template.params.authorCompany.fontSize}px`,
-          color: template.params.accentColor,
-        }}
-      >
-        {template.params.authorCompany.text}
+      {/* Title & Company - Stacked and centered */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            fontFamily: template.params.authorTitle.fontFamily,
+            fontWeight: 400,
+            fontSize: "14px",
+            color: "#777777",
+          }}
+        >
+          {template.params.authorTitle.text}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontFamily: template.params.authorCompany.fontFamily,
+            fontWeight: 600,
+            fontSize: "14px",
+            color: template.params.accentColor,
+          }}
+        >
+          {template.params.authorCompany.text}
+        </div>
       </div>
 
       {/* Rating Stars */}
@@ -127,10 +132,10 @@ export const Template = ({
           }).map((_, index) => (
             <svg
               key={index}
-              width="20"
-              height="20"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
-              fill="#f59e0b"
+              fill="#ffbf00"
               style={{ display: "flex" }}
             >
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -140,19 +145,21 @@ export const Template = ({
       )}
 
       {/* Spacer to push product name to bottom */}
-      <div style={{ flex: 1 }} />
+      <div style={{ flex: 1, minHeight: "60px" }} />
 
       {/* Product Name Button */}
       <div
         style={{
+          display: "flex",
           fontFamily: template.params.productName.fontFamily,
-          fontWeight: template.params.productName.fontWeight,
-          fontSize: `${template.params.productName.fontSize}px`,
-          color: template.params.productName.color,
-          background: "rgba(59, 130, 246, 0.1)",
-          padding: "12px 24px",
+          fontWeight: 600,
+          fontSize: "14px",
+          color: template.params.accentColor,
+          background: "#ffffff",
+          padding: "10px 30px",
           borderRadius: "8px",
-          border: `1px solid ${template.params.accentColor}`,
+          border: "1px solid #d1d9e6",
+          boxShadow: "0 2px 5px rgba(0,0,0,0.05)",
         }}
       >
         {template.params.productName.text}
@@ -164,23 +171,21 @@ export const Template = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        flex: 1,
+        justifyContent: "center",
+        width: "60%",
         paddingLeft: "60px",
-        position: "relative",
-        zIndex: 1,
+        height: "100%",
       }}
     >
       {/* Quote text */}
       <div
         style={{
-          fontFamily: template.params.quote.fontFamily,
-          fontWeight: template.params.quote.fontWeight,
-          fontSize: `${template.params.quote.fontSize}px`,
-          color: template.params.quote.color,
-          lineHeight: "1.5",
-          flex: 1,
           display: "flex",
-          alignItems: "center",
+          fontFamily: template.params.quote.fontFamily,
+          fontWeight: 300,
+          fontSize: "26px",
+          color: "#333333",
+          lineHeight: "1.6",
         }}
       >
         {template.params.quote.text}
@@ -191,26 +196,28 @@ export const Template = ({
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "12px",
-          marginTop: "20px",
+          gap: "10px",
+          marginTop: "30px",
         }}
       >
         <div
           style={{
+            display: "flex",
             width: "40px",
-            height: "2px",
-            background: template.params.accentColor,
+            height: "1px",
+            background: "#333333",
           }}
         />
         <div
           style={{
+            display: "flex",
             fontFamily: template.params.authorName.fontFamily,
-            fontWeight: 500,
-            fontSize: "18px",
-            color: template.params.accentColor,
+            fontWeight: 400,
+            fontSize: "16px",
+            color: "#777777",
           }}
         >
-          {template.params.authorName.text}
+          — {template.params.authorName.text}
         </div>
       </div>
     </div>

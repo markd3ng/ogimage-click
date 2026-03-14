@@ -77,16 +77,9 @@ export const testimonialTemplateDefault: TestimonialTemplate = {
     accentColor: "#3b82f6",
   },
   background: {
-    type: "linear-gradient",
-    direction: "to bottom right",
-    colorStops: ["#ffffff", "#f8fafc", "#f1f5f9"],
-    noise: 0.03,
-    gridOverlay: {
-      pattern: "grid",
-      color: "#e2e8f0",
-      opacity: 0.2,
-      blurRadius: 50,
-    },
+    type: "color",
+    color: "#f7f9fc",
+    noise: 0,
   },
   canvas: {
     width: 1200,
