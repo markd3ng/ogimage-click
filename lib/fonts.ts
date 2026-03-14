@@ -194,31 +194,47 @@ export function getFontUrl({
 
 // getFontsFromTemplate returns a list of fonts used in a template
 export function getFontsFromTemplate(template: Template["params"]) {
-  let fonts: { family: FontFamily; weight: FontWeight }[] = []
+  const fonts: { family: FontFamily; weight: FontWeight }[] = []
 
-  for (const [_key, value] of Object.entries(template)) {
+  const addFont = (family: unknown, weight: unknown) => {
+    if (typeof family !== "string" || typeof weight !== "number") {
+      return
+    }
+
+    const font = { family: family as FontFamily, weight: weight as FontWeight }
     if (
-      value && // ensure the value is non-null
-      typeof value === "object" &&
-      "fontFamily" in value &&
-      "fontWeight" in value
+      !fonts.find(
+        (item) => item.family === font.family && item.weight === font.weight
+      )
     ) {
-      // dedupe based on font weight and family
-      if (
-        fonts.find(
-          (font) =>
-            font.family === value.fontFamily && font.weight === value.fontWeight
-        )
-      ) {
-        continue
-      }
-
-      fonts.push({
-        family: value.fontFamily,
-        weight: value.fontWeight,
-      })
+      fonts.push(font)
     }
   }
 
+  const visit = (value: unknown) => {
+    if (!value || typeof value !== "object") {
+      return
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach(visit)
+      return
+    }
+
+    if ("fontFamily" in value && "fontWeight" in value) {
+      addFont(
+        (value as { fontFamily?: unknown }).fontFamily,
+        (value as { fontWeight?: unknown }).fontWeight
+      )
+    }
+
+    for (const nested of Object.values(value as Record<string, unknown>)) {
+      visit(nested)
+    }
+  }
+
+  visit(template)
+
   return fonts
 }
+

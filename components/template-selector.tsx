@@ -178,6 +178,27 @@ const templates = [
     height: 630,
     skeleton: skeletons["og:notice"],
   },
+  {
+    platform: "open-graph",
+    name: "og:corporate",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["og:corporate"],
+  },
+  {
+    platform: "open-graph",
+    name: "og:testimonial",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["og:testimonial"],
+  },
+  {
+    platform: "open-graph",
+    name: "og:product-showcase",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["og:product-showcase"],
+  },
 
   // Twitter/X Header
   {
@@ -201,6 +222,7 @@ const templates = [
     height: 500,
     skeleton: skeletons["x:header-logo"],
   },
+
   // Blog
   {
     platform: "blog",
@@ -208,6 +230,34 @@ const templates = [
     width: 1200,
     height: 630,
     skeleton: skeletons["blog:basic"],
+  },
+  {
+    platform: "blog",
+    name: "blog:minimal",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["blog:minimal"],
+  },
+  {
+    platform: "blog",
+    name: "blog:logo-focus",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["blog:logo-focus"],
+  },
+  {
+    platform: "blog",
+    name: "blog:magazine",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["blog:magazine"],
+  },
+  {
+    platform: "blog",
+    name: "blog:rich",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["blog:rich"],
   },
 ]
 

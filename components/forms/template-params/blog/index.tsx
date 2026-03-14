@@ -1,1 +1,5 @@
 export * as basic from "./basic"
+export * as minimal from "./minimal"
+export * as logoFocus from "./logo-focus"
+export * as magazine from "./magazine"
+export * as rich from "./rich"

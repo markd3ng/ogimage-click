@@ -9,6 +9,9 @@ export const skeletons = {
   "og:hero": og.Hero,
   "og:image-right": og.ImageRight,
   "og:logos": og.Logos,
+  "og:corporate": og.Corporate,
+  "og:testimonial": og.Testimonial,
+  "og:product-showcase": og.ProductShowcase,
 
   // X Header templates
   "x:header-basic": x.header.Basic,
@@ -17,4 +20,8 @@ export const skeletons = {
 
   // Blog Cover Image
   "blog:basic": blog.Basic,
+  "blog:minimal": blog.Minimal,
+  "blog:logo-focus": blog.LogoFocus,
+  "blog:magazine": blog.Magazine,
+  "blog:rich": blog.Rich,
 }
