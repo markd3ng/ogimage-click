@@ -63,7 +63,7 @@ export const Template = ({
             display: "flex",
           }}
         >
-          "{template.params.quote.text}"
+          &ldquo;{template.params.quote.text}&rdquo;
         </div>
 
         {template.params.rating.show && (
