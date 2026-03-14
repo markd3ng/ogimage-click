@@ -1,17 +1,31 @@
 import { ImageResponse } from "next/og"
 import { NextRequest } from "next/server"
 
-import { getFontsFromTemplate, getFontUrl } from "@/lib/fonts"
+import { getFontsFromTemplate, getFontUrl, FontFamily, FontWeight } from "@/lib/fonts"
 import { templateSchema } from "@/lib/templates"
 import { templates } from "@/components/templates"
 
 export const runtime = "edge"
 
+// Additional fonts needed by templates but not in params
+const additionalFonts: { family: FontFamily; weight: FontWeight }[] = [
+  { family: "noto-sans", weight: 400 }, // For star symbols
+]
+
 export const POST = async (request: NextRequest) => {
   const body = await request.json()
 
   const template = templateSchema.parse(body)
-  const fonts = getFontsFromTemplate(template.params)
+  const fontsFromParams = getFontsFromTemplate(template.params)
+  
+  // Merge with additional fonts, avoiding duplicates
+  const fonts = [...fontsFromParams]
+  for (const additional of additionalFonts) {
+    if (!fonts.find(f => f.family === additional.family && f.weight === additional.weight)) {
+      fonts.push(additional)
+    }
+  }
+  
   const fontsResponses = await Promise.all(
     fonts.map((f) =>
       // Next.js automatically caches fetch requests
