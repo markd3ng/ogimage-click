@@ -178,6 +178,27 @@ const templates = [
     height: 630,
     skeleton: skeletons["og:notice"],
   },
+  {
+    platform: "open-graph",
+    name: "og:corporate",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["og:corporate"],
+  },
+  // {
+  //   platform: "open-graph",
+  //   name: "og:testimonial",
+  //   width: 1200,
+  //   height: 630,
+  //   skeleton: skeletons["og:testimonial"],
+  // },
+  {
+    platform: "open-graph",
+    name: "og:product-showcase",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["og:product-showcase"],
+  },
 
   // Twitter/X Header
   {
@@ -201,6 +222,7 @@ const templates = [
     height: 500,
     skeleton: skeletons["x:header-logo"],
   },
+
   // Blog
   {
     platform: "blog",
@@ -209,6 +231,34 @@ const templates = [
     height: 630,
     skeleton: skeletons["blog:basic"],
   },
+  {
+    platform: "blog",
+    name: "blog:minimal",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["blog:minimal"],
+  },
+  // {
+  //   platform: "blog",
+  //   name: "blog:logo-focus",
+  //   width: 1200,
+  //   height: 630,
+  //   skeleton: skeletons["blog:logo-focus"],
+  // },
+  {
+    platform: "blog",
+    name: "blog:magazine",
+    width: 1200,
+    height: 630,
+    skeleton: skeletons["blog:magazine"],
+  },
+  // {
+  //   platform: "blog",
+  //   name: "blog:rich",
+  //   width: 1200,
+  //   height: 630,
+  //   skeleton: skeletons["blog:rich"],
+  // },
 ]
 
 export default function TemplateSelector() {
@@ -326,7 +376,7 @@ export default function TemplateSelector() {
               .map((t) => (
                 <CarouselItem
                   key={t.name}
-                  className="basis-40 md:basis-64 lg:basis-1/5"
+                  className="basis-36 md:basis-56 lg:basis-[18%]"
                 >
                   <RadioGroupItem
                     value={t.name}
@@ -344,9 +394,8 @@ export default function TemplateSelector() {
           </CarouselContent>
         </RadioGroup>
 
-        {/* NOTE: hiding the buttons for large screens for now since we only have 5 templates */}
-        <CarouselPrevious className="left-2 lg:hidden" variant="secondary" />
-        <CarouselNext className="right-2 lg:hidden" variant="secondary" />
+        <CarouselPrevious className="left-2" variant="secondary" />
+        <CarouselNext className="right-2" variant="secondary" />
       </Carousel>
     </section>
   )

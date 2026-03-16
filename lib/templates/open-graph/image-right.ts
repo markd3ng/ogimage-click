@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import { SITE_NAME } from "@/config/site"
 import { absoluteUrl } from "@/lib/url"
 
 import { backgroundSchema } from "../elements/background"
@@ -35,7 +36,7 @@ export const imageRightTemplateDefault: ImageRightTemplate = {
   name: "og:image-right",
   params: {
     tag: {
-      text: "ogimage.click",
+      text: SITE_NAME,
       fontFamily: "inter",
       fontWeight: 400,
       fontSize: 20,

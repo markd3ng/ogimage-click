@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site"
 import { CustomMDX } from "../mdx"
 import { formatDate, getBlogPosts } from "../utils"
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = siteConfig.url
 
 type Params = Promise<{ slug: string }>
 

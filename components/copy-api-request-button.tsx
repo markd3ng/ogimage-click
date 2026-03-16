@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { absoluteUrl } from "@/lib/url"
 
 export function CopyApiRequestButton() {
   const template = useTemplateStore((state) => state)
@@ -26,9 +27,11 @@ export function CopyApiRequestButton() {
     if (copyAs === "json") {
       await navigator.clipboard.writeText(JSON.stringify(requestBody, null, 2))
     } else if (copyAs === "curl") {
-      const curl = `curl -H "Content-Type: application/json" \\
-  ${process.env.NEXT_PUBLIC_API_URL}/v1/images \\
-  -d '${JSON.stringify(requestBody, null, 2)}' > image.png`
+      const apiUrl = absoluteUrl("/api/v1/images")
+      const curl = `curl -X POST "${apiUrl}" \\
+  -H "Content-Type: application/json" \\
+  -d '${JSON.stringify(requestBody)}' \\
+  -o image.png`
 
       await navigator.clipboard.writeText(curl)
     }

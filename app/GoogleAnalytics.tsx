@@ -1,35 +1,26 @@
 "use client";
 
 import Script from "next/script";
-import * as gtag from "../gtag.js";
+import * as clarity from "../clarity.js";
 
 const GoogleAnalytics = () => {
   return (
     <>
-      {gtag.GA_TRACKING_ID ? (
-        <>
-          <Script
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-          />
-          <Script
-            id="gtag-init"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${gtag.GA_TRACKING_ID}', {
-                page_path: window.location.pathname,
-                });
-              `,
-            }}
-          />
-        </>
-      ) : (
-        <></>
-      )}
+      {clarity.CLARITY_ID ? (
+        <Script
+          id="clarity-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "${clarity.CLARITY_ID}");
+            `,
+          }}
+        />
+      ) : null}
     </>
   );
 };

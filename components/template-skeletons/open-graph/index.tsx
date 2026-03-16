@@ -62,3 +62,56 @@ export function Logos() {
     </div>
   )
 }
+
+export function Corporate() {
+  return (
+    <div className="flex aspect-video h-full w-full flex-col justify-between p-4">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-2 w-32" />
+        </div>
+        <Skeleton className="h-8 w-8 rounded-lg" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-3 w-2/3" />
+      </div>
+      <Skeleton className="h-2 w-full rounded-none" />
+    </div>
+  )
+}
+
+export function Testimonial() {
+  return (
+    <div className="flex aspect-video h-full w-full flex-col justify-between p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="w-3/4 space-y-2">
+          <Skeleton className="h-3 w-full" />
+          <Skeleton className="h-3 w-11/12" />
+          <Skeleton className="h-3 w-4/5" />
+        </div>
+        <Skeleton className="h-10 w-10 rounded-full" />
+      </div>
+      <div className="space-y-1">
+        <Skeleton className="h-3 w-1/3" />
+        <Skeleton className="h-2 w-1/2" />
+      </div>
+    </div>
+  )
+}
+
+export function ProductShowcase() {
+  return (
+    <div className="flex aspect-video h-full w-full items-center gap-3 p-4">
+      <div className="w-3/5 space-y-2">
+        <Skeleton className="h-2 w-1/4" />
+        <Skeleton className="h-4 w-4/5" />
+        <Skeleton className="h-3 w-1/3" />
+        <Skeleton className="h-2 w-3/4" />
+        <Skeleton className="h-2 w-2/3" />
+      </div>
+      <Skeleton className="h-16 w-2/5 rounded-lg" />
+    </div>
+  )
+}

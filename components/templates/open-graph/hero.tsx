@@ -102,6 +102,7 @@ export const Template = ({
           <div
             style={{
               flexShrink: 0,
+              marginTop: "1rem",
 
               fontFamily: template.params.title.fontFamily,
               fontWeight: template.params.title.fontWeight,
@@ -122,7 +123,7 @@ export const Template = ({
 
             width: "100%",
 
-            paddingTop: "4rem",
+            paddingTop: "2rem",
             paddingRight: "4rem",
             paddingLeft: "4rem",
           }}

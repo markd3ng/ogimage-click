@@ -1,2 +1,5 @@
-export * from "./basic";
-
+export * from "./basic"
+export * from "./minimal"
+export * from "./logo-focus"
+export * from "./magazine"
+export * from "./rich"

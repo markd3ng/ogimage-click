@@ -9,6 +9,9 @@ export const templates = {
   "og:hero": og.hero,
   "og:image-right": og.imageRight,
   "og:logos": og.logos,
+  "og:corporate": og.corporate,
+  "og:testimonial": og.testimonial,
+  "og:product-showcase": og.productShowcase,
 
   // X Header templates
   "x:header-basic": x.header.basic,
@@ -17,4 +20,8 @@ export const templates = {
 
   // Blog
   "blog:basic": blog.basic,
+  "blog:minimal": blog.minimal,
+  "blog:logo-focus": blog.logoFocus,
+  "blog:magazine": blog.magazine,
+  "blog:rich": blog.rich,
 }
