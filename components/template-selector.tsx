@@ -185,13 +185,13 @@ const templates = [
     height: 630,
     skeleton: skeletons["og:corporate"],
   },
-  {
-    platform: "open-graph",
-    name: "og:testimonial",
-    width: 1200,
-    height: 630,
-    skeleton: skeletons["og:testimonial"],
-  },
+  // {
+  //   platform: "open-graph",
+  //   name: "og:testimonial",
+  //   width: 1200,
+  //   height: 630,
+  //   skeleton: skeletons["og:testimonial"],
+  // },
   {
     platform: "open-graph",
     name: "og:product-showcase",
@@ -238,13 +238,13 @@ const templates = [
     height: 630,
     skeleton: skeletons["blog:minimal"],
   },
-  {
-    platform: "blog",
-    name: "blog:logo-focus",
-    width: 1200,
-    height: 630,
-    skeleton: skeletons["blog:logo-focus"],
-  },
+  // {
+  //   platform: "blog",
+  //   name: "blog:logo-focus",
+  //   width: 1200,
+  //   height: 630,
+  //   skeleton: skeletons["blog:logo-focus"],
+  // },
   {
     platform: "blog",
     name: "blog:magazine",
@@ -252,13 +252,13 @@ const templates = [
     height: 630,
     skeleton: skeletons["blog:magazine"],
   },
-  {
-    platform: "blog",
-    name: "blog:rich",
-    width: 1200,
-    height: 630,
-    skeleton: skeletons["blog:rich"],
-  },
+  // {
+  //   platform: "blog",
+  //   name: "blog:rich",
+  //   width: 1200,
+  //   height: 630,
+  //   skeleton: skeletons["blog:rich"],
+  // },
 ]
 
 export default function TemplateSelector() {
