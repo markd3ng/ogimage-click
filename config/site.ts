@@ -1,8 +1,8 @@
 import { SiteConfig } from "@/types/siteConfig";
 
 export const SITE_OWNER = "Jude Wei";
-export const BASE_URL = "https://ogimage.click";
-export const SITE_NAME = "ogImage.click";
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://ogimage.click";
+export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "ogImage.click";
 export const TWITTER_URL = "https://x.com/intent/follow?screen_name=judewei_dev";
 export const BLUESKY_URL = "https://bsky.app/profile/judewei.bsky.social";
 

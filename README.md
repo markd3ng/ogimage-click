@@ -47,6 +47,7 @@ pnpm install
 3. Set up environment variables in `.env.local`:
 ```bash
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_NAME=YourSiteName
 NEXT_PUBLIC_CLARITY_ID=your_clarity_site_id
 ```
 
@@ -59,12 +60,19 @@ pnpm dev
 
 ### Site Information
 
-Edit `config/site.ts` to customize your site:
+You can configure the site using **environment variables** (recommended) or by editing `config/site.ts`.
 
+**Using Environment Variables (in `.env.local`):**
+```bash
+NEXT_PUBLIC_BASE_URL=https://yourdomain.com
+NEXT_PUBLIC_SITE_NAME=YourSiteName
+```
+
+**Or edit `config/site.ts` directly:**
 ```typescript
 export const SITE_OWNER = "Your Name";
 export const BASE_URL = "https://yourdomain.com";
-export const SITE_NAME = "YourSiteName";  // Used in templates and UI
+export const SITE_NAME = "YourSiteName";
 export const TWITTER_URL = "https://x.com/your_handle";
 export const BLUESKY_URL = "https://bsky.app/profile/your_handle";
 
@@ -76,7 +84,7 @@ const baseSiteConfig = {
 }
 ```
 
-**Note:** `SITE_NAME` is used throughout the app (templates, watermark, homepage, etc.). Changing it in one place updates everywhere.
+**Note:** `SITE_NAME` is used throughout the app (templates, watermark, homepage, etc.). Environment variables take precedence over hardcoded values.
 
 ### Analytics (Microsoft Clarity)
 
