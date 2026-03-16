@@ -2,6 +2,8 @@
 
 A free and open source tool for generating beautiful Open Graph images, Twitter/X headers, and blog covers - no signup required.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmarkd3ng%2Fogimage-click)
+
 ## 🌟 Features
 
 - **Multiple Template Types**
