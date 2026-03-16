@@ -47,14 +47,106 @@ pnpm install
 3. Set up environment variables in `.env.local`:
 ```bash
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
-NEXT_PUBLIC_GOOGLE_ID=
-NEXT_PUBLIC_GOOGLE_ADSENSE_ID=
+NEXT_PUBLIC_CLARITY_ID=your_clarity_site_id
 ```
 
 4. Start the development server:
 ```bash
 pnpm dev
 ```
+
+## ⚙️ Configuration
+
+### Site Information
+
+Edit `config/site.ts` to customize your site:
+
+```typescript
+export const SITE_OWNER = "Your Name";
+export const BASE_URL = "https://yourdomain.com";
+export const TWITTER_URL = "https://x.com/your_handle";
+export const BLUESKY_URL = "https://bsky.app/profile/your_handle";
+
+const baseSiteConfig = {
+  name: "Your Site Name",
+  title: "Your Site Title",
+  description: "Your site description",
+  // ... other config
+}
+```
+
+### Analytics (Microsoft Clarity)
+
+This project uses Microsoft Clarity for analytics instead of Google Analytics.
+
+1. Get your Clarity Site ID from [Microsoft Clarity](https://clarity.microsoft.com/)
+2. Add to `.env.local`:
+   ```
+   NEXT_PUBLIC_CLARITY_ID=your_clarity_site_id
+   ```
+
+The tracking code is in `clarity.js` and is loaded in `app/GoogleAnalytics.tsx`.
+
+### Blog/Guides Content
+
+Articles are stored in `app/guides/posts/` as `.mdx` files.
+
+**File structure:**
+```
+app/guides/
+├── posts/                    # Article source files
+│   ├── your-article.mdx
+│   └── another-article.mdx
+├── [slug]/                   # Dynamic article page
+├── page.tsx                  # Article list page
+├── utils.ts                  # MDX parsing utilities
+└── layout.tsx
+```
+
+**Adding a new article:**
+
+1. Create a new `.mdx` file in `app/guides/posts/`
+2. Add frontmatter at the top:
+   ```mdx
+   ---
+   title: Your Article Title
+   publishedAt: 2025-01-15
+   summary: Brief description of the article
+   ---
+
+   Your content here...
+   ```
+3. The article will be automatically available at `/guides/your-article-slug`
+
+### Managing Templates
+
+Templates are configured in `components/template-selector.tsx`.
+
+**To hide a template** from the frontend (but keep it available via API), comment it out in the `templates` array:
+
+```typescript
+const templates = [
+  // Open Graph templates
+  {
+    platform: "open-graph",
+    name: "og:image-right",
+    // ...
+  },
+  // {
+  //   platform: "open-graph",
+  //   name: "og:testimonial",  // Hidden from frontend
+  //   ...
+  // },
+]
+```
+
+**Available templates:**
+
+| Category | Templates |
+|----------|-----------|
+| Open Graph | `og:image-right`, `og:hero`, `og:logos`, `og:basic`, `og:notice`, `og:corporate`, `og:product-showcase` |
+| X/Twitter Header | `x:header-basic`, `x:header-minimalist`, `x:header-logo` |
+| Blog Cover | `blog:basic`, `blog:minimal`, `blog:magazine` |
 
 ## 🛠️ Tech Stack
 
@@ -131,7 +223,6 @@ Content-Type: application/json
 | `og:basic` | Simple template with title, description, and logo |
 | `og:notice` | Notice/alert style with icon and message |
 | `og:corporate` | Corporate branding with company info |
-| `og:testimonial` | Customer testimonial with quote and rating |
 | `og:product-showcase` | Product showcase with features and pricing |
 
 ### X Header Series (1500 x 500)
@@ -148,9 +239,7 @@ Content-Type: application/json
 |-------------|-------------|
 | `blog:basic` | Basic blog cover with title and author |
 | `blog:minimal` | Minimalist blog cover |
-| `blog:logo-focus` | Blog cover with logo focus |
 | `blog:magazine` | Magazine-style blog cover |
-| `blog:rich` | Rich blog cover with stats and tags |
 
 ---
 

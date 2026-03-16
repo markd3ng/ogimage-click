@@ -1,5 +1,6 @@
 import Link from "next/link"
 
+import { BASE_URL } from "@/config/site"
 import { HtmlCodeBlock, NextjsCodeBlock } from "./howToAddSection/CodeBlock"
 import { TabsWrapper } from "./howToAddSection/TabsWrapper"
 
@@ -39,7 +40,7 @@ export default function HowToAddSection() {
         <ul className="mt-2 list-disc space-y-2 pl-5 text-sm text-gray-600 dark:text-gray-300">
           <li>
             <Link
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/guides/the-free-open-gragh-image-generator`}
+              href={`${BASE_URL}/guides/the-free-open-gragh-image-generator`}
               prefetch={false}
               title="The Free Open Graph Image Generator"
               className="inline-block w-full whitespace-normal break-words text-sm underline"
@@ -49,7 +50,7 @@ export default function HowToAddSection() {
           </li>
           <li>
             <Link
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/guides/og-image-tips-2025-social-sharing-guide`}
+              href={`${BASE_URL}/guides/og-image-tips-2025-social-sharing-guide`}
               prefetch={false}
               title="The Best OG Image Tips for 2025: Maximize Social Shares"
               className="inline-block w-full whitespace-normal break-words text-sm underline"
@@ -59,7 +60,7 @@ export default function HowToAddSection() {
           </li>
           <li>
             <Link
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/guides/og-image-design-principles`}
+              href={`${BASE_URL}/guides/og-image-design-principles`}
               prefetch={false}
               title="OG Image Design 2025: Create Social Previews That Convert"
               className="inline-block w-full whitespace-normal break-words text-sm underline"
