@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import { SITE_NAME } from "@/config/site"
 import { absoluteUrl } from "@/lib/url"
 
 import { backgroundSchema } from "../elements/background"
@@ -34,7 +35,7 @@ export const basicTemplateDefault: BasicTemplate = {
   name: "og:basic",
   params: {
     title: {
-      text: "ogImage.click",
+      text: SITE_NAME,
       fontFamily: "inter",
       fontWeight: 700,
       fontSize: 52,

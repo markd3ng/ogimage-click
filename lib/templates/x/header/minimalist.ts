@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import { SITE_NAME } from "@/config/site"
 import { backgroundSchema } from "../../elements/background"
 import { canvasSchema } from "../../elements/canvas"
 import { textSchema } from "../../elements/text"
@@ -30,7 +31,7 @@ export const minimalistTemplateDefault: MinimalistTemplate = {
   name: "x:header-minimalist",
   params: {
     title: {
-      text: "ogImage.click",
+      text: SITE_NAME,
       fontFamily: "inter",
       fontWeight: 600,
       fontSize: 48,

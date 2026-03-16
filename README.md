@@ -64,6 +64,7 @@ Edit `config/site.ts` to customize your site:
 ```typescript
 export const SITE_OWNER = "Your Name";
 export const BASE_URL = "https://yourdomain.com";
+export const SITE_NAME = "YourSiteName";  // Used in templates and UI
 export const TWITTER_URL = "https://x.com/your_handle";
 export const BLUESKY_URL = "https://bsky.app/profile/your_handle";
 
@@ -74,6 +75,8 @@ const baseSiteConfig = {
   // ... other config
 }
 ```
+
+**Note:** `SITE_NAME` is used throughout the app (templates, watermark, homepage, etc.). Changing it in one place updates everywhere.
 
 ### Analytics (Microsoft Clarity)
 
