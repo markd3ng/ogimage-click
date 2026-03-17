@@ -97,6 +97,10 @@ NEXT_PUBLIC_CLARITY_ID=your_clarity_site_id
 
 # 可选：启用 Cloudflare R2 存储
 ENABLE_R2_STORAGE=false
+
+# 可选：启用 R2 调试日志用于故障排查
+DEBUG_R2=false
+
 R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
 R2_REGION=auto
 R2_BUCKET=og-images
@@ -323,6 +327,35 @@ export async function GET(request: NextRequest) {
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://yourdomain.com/api/v1/images?template=og:basic&title.text=Your%20Title" />
 ```
+
+---
+
+## 调试
+
+### R2 调试模式
+
+在环境变量中设置 `DEBUG_R2=true` 可以开启 R2 操作的详细日志记录。
+
+**适用场景：**
+- 诊断缓存命中/未命中问题
+- 排查 R2 连接问题
+- 监控对象上传/存在性检查操作
+
+**日志输出内容包括：**
+- 请求 ID 用于追踪
+- 对象 key 生成详情
+- HeadObject（存在性检查）结果
+- PutObject（上传）进度
+- 错误详情及状态码
+
+**示例日志输出：**
+```
+[DEBUG_R2 2025-01-15T10:30:00.000Z] GET request received {"requestId":"...","mode":"json"}
+[DEBUG_R2 2025-01-15T10:30:00.200Z] objectExists called {"key":"og/og-basic/...","bucket":"og-images"}
+[DEBUG_R2 2025-01-15T10:30:00.500Z] objectExists failed {"key":"og/og-basic/...","errorName":"NotFound"}
+```
+
+**注意：** 调试模式仅在开发或故障排查时启用，因为它会增加每个请求的开销。
 
 ---
 

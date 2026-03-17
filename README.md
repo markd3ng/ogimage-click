@@ -97,6 +97,10 @@ NEXT_PUBLIC_CLARITY_ID=your_clarity_site_id
 
 # Optional: Enable Cloudflare R2 storage
 ENABLE_R2_STORAGE=false
+
+# Optional: Enable R2 debug logging for troubleshooting
+DEBUG_R2=false
+
 R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
 R2_REGION=auto
 R2_BUCKET=og-images
@@ -323,6 +327,35 @@ export async function GET(request: NextRequest) {
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://yourdomain.com/api/v1/images?template=og:basic&title.text=Your%20Title" />
 ```
+
+---
+
+## Debugging
+
+### R2 Debug Mode
+
+Set `DEBUG_R2=true` in your environment variables to enable detailed logging for R2 operations.
+
+**Useful for:**
+- Diagnosing cache hit/miss issues
+- Troubleshooting R2 connection problems
+- Monitoring object upload/exists operations
+
+**Log output includes:**
+- Request IDs for tracing
+- Object key generation details
+- HeadObject (exists check) results
+- PutObject (upload) progress
+- Error details with status codes
+
+**Example log output:**
+```
+[DEBUG_R2 2025-01-15T10:30:00.000Z] GET request received {"requestId":"...","mode":"json"}
+[DEBUG_R2 2025-01-15T10:30:00.200Z] objectExists called {"key":"og/og-basic/...","bucket":"og-images"}
+[DEBUG_R2 2025-01-15T10:30:00.500Z] objectExists failed {"key":"og/og-basic/...","errorName":"NotFound"}
+```
+
+**Note:** Debug mode should only be enabled during development or troubleshooting, as it adds overhead to each request.
 
 ---
 
