@@ -1,104 +1,104 @@
 # ogimage.click
 
-[中文文档](README.zh-CN.md)
+[English Documentation](README.md)
 
-A free and open source tool for generating beautiful Open Graph images, Twitter/X headers, and blog covers. No signup required.
-
----
-
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Features](#features)
-- [Live Demo](#live-demo)
-- [Quick Start](#quick-start)
-- [API Documentation](#api-documentation)
-- [Configuration](#configuration)
-- [Templates Reference](#templates-reference)
-- [Request Examples](#request-examples)
-- [Background Configuration](#background-configuration)
-- [Supported Fonts](#supported-fonts)
-- [Tech Stack](#tech-stack)
-- [Contributing](#contributing)
-- [License](#license)
+一个免费开源的工具，用于生成精美的 Open Graph 图片、Twitter/X 横幅和博客封面。无需注册即可使用。
 
 ---
 
-## Introduction
+## 目录
 
-ogimage.click is a developer-friendly tool for generating social media images programmatically. It provides a visual editor for designing images and a REST API for automated generation.
-
-**Use Cases:**
-- Generate dynamic Open Graph images for your website
-- Create Twitter/X headers programmatically
-- Design blog cover images at scale
-- Build automated social media workflows
-
----
-
-## Features
-
-**Multiple Image Types**
-- Open Graph Images (1200 x 630)
-- Twitter/X Headers (1500 x 500)
-- Blog Cover Images (1200 x 630)
-
-**Rich Customization**
-- Custom backgrounds (solid colors and gradients)
-- Grid and noise overlays
-- Logo upload support
-- Professional typography
-- Multiple export formats (PNG, JPEG, WebP)
-
-**Developer Experience**
-- REST API for programmatic image generation
-- Ready-to-use HTML meta tags
-- Next.js App Router integration
-- Real-time preview
-- No authentication required
-- Free and open source
-
-**Storage Modes**
-- Direct Mode: Return images directly via API (default)
-- R2 Persist Mode: Store images in Cloudflare R2 with public URLs
+- [简介](#简介)
+- [功能特性](#功能特性)
+- [在线演示](#在线演示)
+- [快速开始](#快速开始)
+- [API 文档](#api-文档)
+- [配置说明](#配置说明)
+- [模板参考](#模板参考)
+- [请求示例](#请求示例)
+- [背景配置](#背景配置)
+- [支持的字体](#支持的字体)
+- [技术栈](#技术栈)
+- [贡献指南](#贡献指南)
+- [许可证](#许可证)
 
 ---
 
-## Live Demo
+## 简介
 
-Visit [ogimage.click](https://ogimage.click/) to try the visual editor.
+ogimage.click 是一个面向开发者的工具，用于以编程方式生成社交媒体图片。它提供可视化编辑器用于设计图片，以及 REST API 用于自动化生成。
+
+**使用场景：**
+- 为网站生成动态 Open Graph 图片
+- 以编程方式创建 Twitter/X 横幅
+- 批量设计博客封面图片
+- 构建自动化社交媒体工作流
 
 ---
 
-## Quick Start
+## 功能特性
 
-### Prerequisites
+**多种图片类型**
+- Open Graph 图片 (1200 x 630)
+- Twitter/X 横幅 (1500 x 500)
+- 博客封面图片 (1200 x 630)
+
+**丰富的自定义选项**
+- 自定义背景（纯色和渐变）
+- 网格和噪点叠加
+- Logo 上传支持
+- 专业排版
+- 多种导出格式（PNG、JPEG、WebP）
+
+**开发者体验**
+- 用于程序化生成图片的 REST API
+- 开箱即用的 HTML Meta 标签
+- Next.js App Router 集成
+- 实时预览
+- 无需身份验证
+- 免费开源
+
+**存储模式**
+- 直接模式：直接通过 API 返回图片（默认）
+- R2 持久化模式：将图片存储在 Cloudflare R2 中，提供公开 URL
+
+---
+
+## 在线演示
+
+访问 [ogimage.click](https://ogimage.click/) 试用可视化编辑器。
+
+---
+
+## 快速开始
+
+### 环境要求
 
 - Node.js 18+
-- pnpm (recommended) or npm
+- pnpm（推荐）或 npm
 
-### Installation
+### 安装步骤
 
-1. Clone the repository:
+1. 克隆仓库：
 ```bash
 git clone https://github.com/markd3ng/ogimage-click.git
 cd ogimage-click
 ```
 
-2. Install dependencies:
+2. 安装依赖：
 ```bash
 pnpm install
 ```
 
-3. Set up environment variables in `.env.local`:
+3. 在 `.env.local` 中设置环境变量：
 ```bash
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 NEXT_PUBLIC_CLARITY_ID=your_clarity_site_id
 
-# Optional: Enable Cloudflare R2 storage
+# 可选：启用 Cloudflare R2 存储
 ENABLE_R2_STORAGE=false
 
-# Optional: Enable R2 debug logging for troubleshooting
+# 可选：启用 R2 调试日志用于故障排查
 DEBUG_R2=false
 
 R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
@@ -109,73 +109,73 @@ R2_SECRET_ACCESS_KEY=your_r2_secret_access_key
 R2_PUBLIC_BASE_URL=https://cdn.example.com
 ```
 
-4. Start the development server:
+4. 启动开发服务器：
 ```bash
 pnpm dev
 ```
 
 ---
 
-## API Documentation
+## API 文档
 
-### Overview
+### 概述
 
-The API supports two storage modes controlled by the `ENABLE_R2_STORAGE` environment variable:
+API 支持两种存储模式，通过 `ENABLE_R2_STORAGE` 环境变量控制：
 
-| Mode | ENABLE_R2_STORAGE | Behavior |
-|------|-------------------|----------|
-| Direct | `false` or unset | Returns `image/png` binary directly |
-| R2 Persist | `true` | Persists to R2, returns URL or 302 redirect |
+| 模式 | ENABLE_R2_STORAGE | 行为 |
+|------|-------------------|------|
+| 直接模式 | `false` 或未设置 | 直接返回 `image/png` 二进制数据 |
+| R2 持久化 | `true` | 持久化到 R2，返回 URL 或 302 跳转 |
 
-### Direct Mode (Default)
+### 直接模式（默认）
 
-No external storage configuration required. Images are generated on-demand and returned directly.
+无需外部存储配置。图片按需生成并直接返回。
 
-**Cache Headers:**
+**缓存头：**
 ```
 Cache-Control: public, max-age=0, s-maxage=604800, stale-while-revalidate=604800
 ```
 
-### R2 Persist Mode
+### R2 持久化模式
 
-Requires Cloudflare R2 configuration. Generated images are stored in R2 with public read access.
+需要 Cloudflare R2 配置。生成的图片存储在 R2 中，具有公开读取权限。
 
-**Benefits:**
-- Images served directly from CDN
-- Reduced compute on subsequent requests
-- Stable URLs for caching
+**优势：**
+- 图片直接从 CDN 提供
+- 减少后续请求的计算开销
+- URL 稳定便于缓存
 
-**CORS Note:** If only using images in `<img>` tags, no additional CORS configuration is needed. For `fetch`/`canvas` pixel access, configure R2 CORS to allow your domain.
+**CORS 说明：** 如果仅在 `<img>` 标签中使用图片，无需额外的 CORS 配置。如需 `fetch`/`canvas` 像素访问，请配置 R2 CORS 允许你的域名。
 
-### Endpoints
+### 接口端点
 
 #### POST /api/v1/images
 
-Generate images with full customization using JSON body.
+使用 JSON 请求体生成具有完整自定义选项的图片。
 
-**Headers:**
+**请求头：**
 ```
 Content-Type: application/json
 ```
 
-**Request Body:**
+**请求体：**
 ```typescript
 {
-  name: string;           // Template ID (required)
-  params: object;         // Template-specific parameters (required)
-  background: object;     // Background configuration (required)
-  canvas: {               // Canvas dimensions (required)
+  name: string;           // 模板 ID（必需）
+  params: object;         // 模板特定参数（必需）
+  background: object;     // 背景配置（必需）
+  canvas: {               // 画布尺寸（必需）
     width: number;
     height: number;
   }
 }
 ```
 
-**Response (Direct Mode):**
+**响应（直接模式）：**
 - Content-Type: `image/png`
-- Body: Binary PNG data
+- Body: PNG 二进制数据
 
-**Response (R2 Mode - JSON default):**
+**响应（R2 模式 - 默认 JSON）：**
 ```json
 {
   "url": "https://cdn.example.com/og/og-basic/<hash>.png",
@@ -184,55 +184,55 @@ Content-Type: application/json
 }
 ```
 
-**Response (R2 Mode - Redirect):**
-- Status: `302 Found`
-- Header: `Location: https://cdn.example.com/og/og-basic/<hash>.png`
+**响应（R2 模式 - 跳转）：**
+- 状态: `302 Found`
+- 响应头: `Location: https://cdn.example.com/og/og-basic/<hash>.png`
 
-**Query Parameters (R2 Mode only):**
-- `mode=redirect` - Returns 302 redirect instead of JSON
+**查询参数（仅 R2 模式）：**
+- `mode=redirect` - 返回 302 跳转而非 JSON
 
 #### GET /api/v1/images
 
-Generate images using URL parameters for simple use cases.
+使用 URL 参数生成图片，适用于简单场景。
 
-**Query Parameters:**
+**查询参数：**
 
-| Parameter | Type | Required | Description | Example |
-|-----------|------|----------|-------------|---------|
-| `template` | string | Yes | Template ID | `og:basic` |
-| `title.text` | string | No | Title text | `Hello World` |
-| `description.text` | string | No | Description text | `My description` |
-| `logo.url` | string | No | Logo image URL | `https://example.com/logo.png` |
-| `title.color` | string | No | Title color | `#ff0000` |
-| `title.fontSize` | number | No | Title font size | `52` |
-| `mode` | string | No | R2 mode only: `json` or `redirect` | `redirect` |
+| 参数 | 类型 | 必需 | 描述 | 示例 |
+|------|------|------|------|------|
+| `template` | string | 是 | 模板 ID | `og:basic` |
+| `title.text` | string | 否 | 标题文本 | `Hello World` |
+| `description.text` | string | 否 | 描述文本 | `My description` |
+| `logo.url` | string | 否 | Logo 图片 URL | `https://example.com/logo.png` |
+| `title.color` | string | 否 | 标题颜色 | `#ff0000` |
+| `title.fontSize` | number | 否 | 标题字体大小 | `52` |
+| `mode` | string | 否 | R2 模式专用：`json` 或 `redirect` | `redirect` |
 
-**Response:** Same as POST endpoint.
+**响应：** 与 POST 端点相同。
 
-**Example URLs:**
+**示例 URL：**
 ```
-# Direct mode (default)
+# 直接模式（默认）
 https://ogimage.click/api/v1/images?template=og:basic&title.text=Hello%20World
 
-# R2 JSON mode
+# R2 JSON 模式
 https://ogimage.click/api/v1/images?template=og:basic&title.text=Hello%20World&mode=json
 
-# R2 Redirect mode
+# R2 跳转模式
 https://ogimage.click/api/v1/images?template=og:basic&title.text=Hello%20World&mode=redirect
 ```
 
-### Usage Examples
+### 使用示例
 
 #### cURL
 
 ```bash
-# Direct mode - saves image to file
+# 直接模式 - 保存图片到文件
 curl -X POST "https://your-domain.com/api/v1/images" \
   -H "Content-Type: application/json" \
   -d '{"name":"og:corporate","params":{"companyName":{"text":"My Company","fontFamily":"inter","fontWeight":700,"fontSize":36,"color":"#1e40af"},"title":{"text":"Welcome","fontFamily":"inter","fontWeight":600,"fontSize":42,"color":"#0f172a"}},"background":{"type":"color","color":"#ffffff","noise":0},"canvas":{"width":1200,"height":630}}' \
   -o image.png
 
-# R2 mode - returns JSON with URL
+# R2 模式 - 返回包含 URL 的 JSON
 curl -X POST "https://your-domain.com/api/v1/images" \
   -H "Content-Type: application/json" \
   -d '{"name":"og:basic","params":{"title":{"text":"Hello"}},"background":{"type":"color","color":"#ffffff"},"canvas":{"width":1200,"height":630}}'
@@ -241,7 +241,7 @@ curl -X POST "https://your-domain.com/api/v1/images" \
 #### JavaScript (Fetch)
 
 ```javascript
-// Direct mode
+// 直接模式
 const response = await fetch('https://your-domain.com/api/v1/images', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
@@ -258,7 +258,7 @@ const response = await fetch('https://your-domain.com/api/v1/images', {
 const blob = await response.blob();
 const url = URL.createObjectURL(blob);
 
-// R2 mode
+// R2 模式
 const response = await fetch('https://your-domain.com/api/v1/images', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
@@ -266,10 +266,10 @@ const response = await fetch('https://your-domain.com/api/v1/images', {
 });
 
 const data = await response.json();
-console.log(data.url); // https://cdn.example.com/og/...
+console.log(data.url); // https://cdn.example.com/...
 ```
 
-#### Next.js Integration
+#### Next.js 集成
 
 ```typescript
 // app/api/og/route.tsx
@@ -279,7 +279,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const title = searchParams.get('title') || 'Hello World';
 
-  // Direct mode - proxy the image
+  // 直接模式 - 代理图片
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/images`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -296,7 +296,7 @@ export async function GET(request: NextRequest) {
   });
 }
 
-// R2 mode - redirect to stored image
+// R2 模式 - 跳转到已存储的图片
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const title = searchParams.get('title') || 'Hello World';
@@ -317,7 +317,7 @@ export async function GET(request: NextRequest) {
 }
 ```
 
-### HTML Meta Tags
+### HTML Meta 标签
 
 ```html
 <meta property="og:title" content="Your Page Title" />
@@ -330,40 +330,40 @@ export async function GET(request: NextRequest) {
 
 ---
 
-## Debugging
+## 调试
 
-### R2 Debug Mode
+### R2 调试模式
 
-Set `DEBUG_R2=true` in your environment variables to enable detailed logging for R2 operations.
+在环境变量中设置 `DEBUG_R2=true` 可以开启 R2 操作的详细日志记录。
 
-**Useful for:**
-- Diagnosing cache hit/miss issues
-- Troubleshooting R2 connection problems
-- Monitoring object upload/exists operations
+**适用场景：**
+- 诊断缓存命中/未命中问题
+- 排查 R2 连接问题
+- 监控对象上传/存在性检查操作
 
-**Log output includes:**
-- Request IDs for tracing
-- Object key generation details
-- HeadObject (exists check) results
-- PutObject (upload) progress
-- Error details with status codes
+**日志输出内容包括：**
+- 请求 ID 用于追踪
+- 对象 key 生成详情
+- HeadObject（存在性检查）结果
+- PutObject（上传）进度
+- 错误详情及状态码
 
-**Example log output:**
+**示例日志输出：**
 ```
 [DEBUG_R2 2025-01-15T10:30:00.000Z] GET request received {"requestId":"...","mode":"json"}
 [DEBUG_R2 2025-01-15T10:30:00.200Z] objectExists called {"key":"og/og-basic/...","bucket":"og-images"}
 [DEBUG_R2 2025-01-15T10:30:00.500Z] objectExists failed {"key":"og/og-basic/...","errorName":"NotFound"}
 ```
 
-**Note:** Debug mode should only be enabled during development or troubleshooting, as it adds overhead to each request.
+**注意：** 调试模式仅在开发或故障排查时启用，因为它会增加每个请求的开销。
 
 ---
 
-## Configuration
+## 配置说明
 
-### Site Information
+### 站点信息
 
-Edit `config/site.ts` to customize your site:
+编辑 `config/site.ts` 自定义你的站点：
 
 ```typescript
 export const SITE_OWNER = "Your Name";
@@ -379,36 +379,36 @@ const baseSiteConfig = {
 }
 ```
 
-### Analytics (Microsoft Clarity)
+### 分析统计（Microsoft Clarity）
 
-1. Get your Clarity Site ID from [Microsoft Clarity](https://clarity.microsoft.com/)
-2. Add to `.env.local`:
+1. 从 [Microsoft Clarity](https://clarity.microsoft.com/) 获取你的 Clarity 站点 ID
+2. 添加到 `.env.local`：
    ```
    NEXT_PUBLIC_CLARITY_ID=your_clarity_site_id
    ```
 
-The tracking code is in `clarity.js` and loaded in `app/GoogleAnalytics.tsx`.
+跟踪代码位于 `clarity.js`，在 `app/GoogleAnalytics.tsx` 中加载。
 
-### Blog/Guides Content
+### 博客/指南内容
 
-Articles are stored in `app/guides/posts/` as `.mdx` files.
+文章以 `.mdx` 文件形式存储在 `app/guides/posts/` 中。
 
-**File structure:**
+**文件结构：**
 ```
 app/guides/
-├── posts/                    # Article source files
+├── posts/                    # 文章源文件
 │   ├── your-article.mdx
 │   └── another-article.mdx
-├── [slug]/                   # Dynamic article page
-├── page.tsx                  # Article list page
-├── utils.ts                  # MDX parsing utilities
+├── [slug]/                   # 动态文章页面
+├── page.tsx                  # 文章列表页
+├── utils.ts                  # MDX 解析工具
 └── layout.tsx
 ```
 
-**Adding a new article:**
+**添加新文章：**
 
-1. Create a new `.mdx` file in `app/guides/posts/`
-2. Add frontmatter at the top:
+1. 在 `app/guides/posts/` 中创建新的 `.mdx` 文件
+2. 在顶部添加 frontmatter：
    ```mdx
    ---
    title: Your Article Title
@@ -418,13 +418,13 @@ app/guides/
 
    Your content here...
    ```
-3. The article will be automatically available at `/guides/your-article-slug`
+3. 文章将自动在 `/guides/your-article-slug` 可用
 
-### Managing Templates
+### 管理模板
 
-Templates are configured in `components/template-selector.tsx`.
+模板在 `components/template-selector.tsx` 中配置。
 
-**To hide a template** from the frontend (but keep it available via API), comment it out in the `templates` array:
+**隐藏模板**（前端隐藏但 API 仍可用）：在 `templates` 数组中将其注释掉：
 
 ```typescript
 const templates = [
@@ -435,7 +435,7 @@ const templates = [
   },
   // {
   //   platform: "open-graph",
-  //   name: "og:testimonial",  // Hidden from frontend
+  //   name: "og:testimonial",  // 前端隐藏
   //   ...
   // },
 ]
@@ -443,39 +443,39 @@ const templates = [
 
 ---
 
-## Templates Reference
+## 模板参考
 
-### Open Graph Series (1200 x 630)
+### Open Graph 系列 (1200 x 630)
 
-| Template ID | Description |
-|-------------|-------------|
-| `og:image-right` | Image on the right side with text on left |
-| `og:hero` | Hero-style with large title and background image |
-| `og:logos` | Display multiple logos in a grid layout |
-| `og:basic` | Simple template with title, description, and logo |
-| `og:notice` | Notice/alert style with icon and message |
-| `og:corporate` | Corporate branding with company info |
-| `og:product-showcase` | Product showcase with features and pricing |
+| 模板 ID | 描述 |
+|---------|------|
+| `og:image-right` | 图片在右侧，文字在左侧 |
+| `og:hero` | 大标题和背景图的 Hero 风格 |
+| `og:logos` | 网格布局显示多个 Logo |
+| `og:basic` | 简单的标题、描述和 Logo 模板 |
+| `og:notice` | 带图标和消息的通告/提醒风格 |
+| `og:corporate` | 企业品牌信息模板 |
+| `og:product-showcase` | 产品展示，包含特性和定价 |
 
-### X/Twitter Header Series (1500 x 500)
+### X/Twitter 横幅系列 (1500 x 500)
 
-| Template ID | Description |
-|-------------|-------------|
-| `x:header-basic` | Basic header with text |
-| `x:header-minimalist` | Minimalist header design |
-| `x:header-logo` | Header with logo prominently displayed |
+| 模板 ID | 描述 |
+|---------|------|
+| `x:header-basic` | 基础文字横幅 |
+| `x:header-minimalist` | 极简设计横幅 |
+| `x:header-logo` | 突出显示 Logo 的横幅 |
 
-### Blog Cover Series (1200 x 630)
+### 博客封面系列 (1200 x 630)
 
-| Template ID | Description |
-|-------------|-------------|
-| `blog:basic` | Basic blog cover with title and author |
-| `blog:minimal` | Minimalist blog cover |
-| `blog:magazine` | Magazine-style blog cover |
+| 模板 ID | 描述 |
+|---------|------|
+| `blog:basic` | 带标题和作者的基础博客封面 |
+| `blog:minimal` | 极简博客封面 |
+| `blog:magazine` | 杂志风格博客封面 |
 
 ---
 
-## Request Examples
+## 请求示例
 
 ### og:corporate
 
@@ -621,9 +621,9 @@ const templates = [
 
 ---
 
-## Background Configuration
+## 背景配置
 
-### Solid Color
+### 纯色背景
 
 ```json
 {
@@ -633,7 +633,7 @@ const templates = [
 }
 ```
 
-### Linear Gradient
+### 线性渐变
 
 ```json
 {
@@ -644,7 +644,7 @@ const templates = [
 }
 ```
 
-### With Grid Overlay
+### 带网格叠加
 
 ```json
 {
@@ -661,20 +661,20 @@ const templates = [
 }
 ```
 
-### Grid Patterns
+### 网格图案
 
-| Pattern | Description |
-|---------|-------------|
-| `grid` | Regular grid lines |
-| `dots` | Dot pattern |
-| `diagonal-lines` | Diagonal line pattern |
+| 图案 | 描述 |
+|------|------|
+| `grid` | 规则网格线 |
+| `dots` | 点状图案 |
+| `diagonal-lines` | 对角线图案 |
 
 ---
 
-## Supported Fonts
+## 支持的字体
 
-| Font Family | Value |
-|-------------|-------|
+| 字体 | 值 |
+|------|-----|
 | Inter | `inter` |
 | Roboto | `roboto` |
 | Open Sans | `open-sans` |
@@ -697,7 +697,7 @@ const templates = [
 
 ---
 
-## Tech Stack
+## 技术栈
 
 - [Next.js 15](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
@@ -708,24 +708,24 @@ const templates = [
 
 ---
 
-## Contributing
+## 贡献指南
 
-Contributions are welcome. Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+欢迎贡献。请随时提交 Pull Request。对于重大更改，请先打开 issue 讨论你想要更改的内容。
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+1. Fork 本仓库
+2. 创建你的功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开 Pull Request
 
 ---
 
-Built by [markd3ng](https://github.com/markd3ng)
+## 许可证
 
-This project is inspired by and built upon [imgsrc-app](https://github.com/FadyMak/imgsrc-app)
+本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件。
+
+---
+
+由 [markd3ng](https://github.com/markd3ng) 构建
+
+本项目灵感来源于 [imgsrc-app](https://github.com/FadyMak/imgsrc-app)
