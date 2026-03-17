@@ -48,7 +48,16 @@ pnpm install
 ```bash
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 NEXT_PUBLIC_CLARITY_ID=your_clarity_site_id
+
+# Cloudflare R2 (S3-compatible)
+R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
+R2_REGION=auto
+R2_BUCKET=og-images
+R2_ACCESS_KEY_ID=your_r2_access_key_id
+R2_SECRET_ACCESS_KEY=your_r2_secret_access_key
+R2_PUBLIC_BASE_URL=https://cdn.example.com
 ```
+
 
 4. Start the development server:
 ```bash
@@ -181,20 +190,18 @@ const templates = [
 
 ## 📚 API Documentation
 
-### Endpoint
+### Endpoints
 
-```
-POST /api/v1/images
-```
+#### 1. POST /api/v1/images
 
-### Request Headers
+For complex templates with full customization (JSON body).
 
+**Request Headers:**
 ```
 Content-Type: application/json
 ```
 
-### Request Body Structure
-
+**Request Body Structure:**
 ```typescript
 {
   name: string;           // Template ID (required)
@@ -207,10 +214,94 @@ Content-Type: application/json
 }
 ```
 
-### Response
-
+**Response (Direct Mode - 默认):**
 - **Content-Type**: `image/png`
 - **Body**: Binary PNG image data
+
+**Response (R2 Persist Mode):**
+- `mode=redirect` → `302` 跳转到图片 URL
+- 默认 → JSON: `{ url, key, cached }`
+
+#### 2. GET /api/v1/images
+
+For simple usage with URL parameters.
+
+**Query Parameters:**
+
+| Parameter | Type | Description | Example |
+|-----------|------|-------------|---------|
+| `template` | string | **Required.** Template ID | `og:basic` |
+| `title.text` | string | Title text | `Hello World` |
+| `description.text` | string | Description text | `My description` |
+| `logo.url` | string | Logo image URL | `https://example.com/logo.png` |
+| `title.color` | string | Title color | `#ff0000` |
+| `title.fontSize` | number | Title font size | `52` |
+| `mode` | string | R2 mode only: `json` / `redirect` | `redirect` |
+
+**Response (Direct Mode - 默认):**
+- **Content-Type**: `image/png`
+- **Body**: Binary PNG image data
+
+**Response (R2 Persist Mode - JSON):**
+```json
+{
+  "url": "https://cdn.example.com/og/og-basic/<hash>.png",
+  "key": "og/og-basic/<hash>.png",
+  "cached": true
+}
+```
+
+**Response (R2 Persist Mode - redirect):**
+- `302 Found` → `Location: https://cdn.example.com/og/og-basic/<hash>.png`
+
+**Example URLs:**
+
+```
+# Direct mode (default)
+https://ogimage.click/api/v1/images?template=og:basic&title.text=Hello%20World
+
+# R2 JSON mode
+https://ogimage.click/api/v1/images?template=og:basic&title.text=Hello%20World&mode=json
+
+# R2 Redirect mode
+https://ogimage.click/api/v1/images?template=og:basic&title.text=Hello%20World&mode=redirect
+```
+
+**HTML Usage:**
+
+```html
+<!-- Direct mode -->
+<img src="https://ogimage.click/api/v1/images?template=og:basic&title.text=Hello%20World" alt="OG Image" />
+
+<!-- R2 mode (use the returned URL) -->
+<img src="https://cdn.example.com/og/og-basic/<hash>.png" alt="OG Image" />
+
+<!-- Open Graph meta tag -->
+<meta property="og:image" content="https://cdn.example.com/og/og-basic/<hash>.png" />
+```
+
+### Caching & Storage Mode
+
+API 支持两种存储模式，通过 `ENABLE_R2_STORAGE` 环境变量切换：
+
+| Mode | `ENABLE_R2_STORAGE` | Behavior |
+|------|---------------------|----------|
+| **Direct** (default) | `false` 或未设置 | 直接返回 `image/png` 二进制，不依赖外部存储 |
+| **R2 Persist** | `true` | 生成图片持久化到 R2，返回 JSON URL 或 302 跳转 |
+
+**Direct Mode (默认)**
+- 无需配置 R2 环境变量
+- 直接返回 PNG 图片二进制
+- 缓存：`Cache-Control: public, max-age=0, s-maxage=604800, stale-while-revalidate=604800` (7 days)
+
+**R2 Persist Mode**
+- 需要完整 R2 配置
+- 首次生成后持久化存储，后续直接返回已有 URL
+- API 缓存 7 天 + R2 对象缓存 7 天
+- 公开读、私有写（服务端凭证写入，前端用公开 URL）
+
+**R2 CORS Note:** 如果仅在 `<img>` 标签中使用，通常无需额外 CORS 配置；如需 `fetch`/`canvas` 像素访问，需在 R2 配置允许站点域名的 `GET` 跨域规则。
+
 
 ---
 
@@ -399,8 +490,7 @@ Content-Type: application/json
 ```bash
 curl -X POST "https://your-domain.com/api/v1/images" \
   -H "Content-Type: application/json" \
-  -d '{"name":"og:corporate","params":{"companyName":{"text":"My Company","fontFamily":"inter","fontWeight":700,"fontSize":36,"color":"#1e40af"},"tagline":{"text":"Innovation First","fontFamily":"inter","fontWeight":400,"fontSize":20,"color":"#64748b"},"title":{"text":"Welcome to Our Platform","fontFamily":"inter","fontWeight":600,"fontSize":42,"color":"#0f172a"},"subtitle":{"text":"Build something amazing today.","fontFamily":"inter","fontWeight":400,"fontSize":24,"color":"#475569"},"logo":{"url":"https://your-domain.com/logo.png"},"brandColor":"#2563eb"},"background":{"type":"color","color":"#ffffff","noise":0},"canvas":{"width":1200,"height":630}}' \
-  -o og-image.png
+  -d '{"name":"og:corporate","params":{"companyName":{"text":"My Company","fontFamily":"inter","fontWeight":700,"fontSize":36,"color":"#1e40af"},"tagline":{"text":"Innovation First","fontFamily":"inter","fontWeight":400,"fontSize":20,"color":"#64748b"},"title":{"text":"Welcome to Our Platform","fontFamily":"inter","fontWeight":600,"fontSize":42,"color":"#0f172a"},"subtitle":{"text":"Build something amazing today.","fontFamily":"inter","fontWeight":400,"fontSize":24,"color":"#475569"},"logo":{"url":"https://your-domain.com/logo.png"},"brandColor":"#2563eb"},"background":{"type":"color","color":"#ffffff","noise":0},"canvas":{"width":1200,"height":630}}'
 ```
 
 ### JavaScript (Fetch)
@@ -459,28 +549,24 @@ const response = await fetch('https://your-domain.com/api/v1/images', {
   }),
 });
 
-const blob = await response.blob();
-const url = URL.createObjectURL(blob);
+const data = await response.json();
 
-// Use the image URL
 const img = document.createElement('img');
-img.src = url;
+img.src = data.url;
 document.body.appendChild(img);
 ```
 
-### Next.js API Route (Dynamic OG Image)
+### Next.js API Route (Dynamic OG Image URL)
 
 ```typescript
 // app/api/og/route.tsx
 import { NextRequest } from 'next/server';
 
-export const runtime = 'edge';
-
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const title = searchParams.get('title') || 'Hello World';
-  
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/images`, {
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/images?mode=redirect`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -496,14 +582,15 @@ export async function GET(request: NextRequest) {
       background: { type: 'color', color: '#ffffff', noise: 0 },
       canvas: { width: 1200, height: 630 },
     }),
+    redirect: 'manual',
   });
-  
-  return new Response(response.body, {
-    headers: {
-      'Content-Type': 'image/png',
-      'Cache-Control': 'public, max-age=31536000, immutable',
-    },
-  });
+
+  const location = response.headers.get('location');
+  if (!location) {
+    return new Response('OG URL not found', { status: 500 });
+  }
+
+  return Response.redirect(location, 302);
 }
 ```
 
