@@ -1,5 +1,7 @@
 import { HeadObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 
+import { debugLog } from "./debug"
+
 const getRequiredEnv = (name: keyof NodeJS.ProcessEnv) => {
   const value = process.env[name]
   if (!value) {
@@ -33,15 +35,23 @@ const getClient = (() => {
 })()
 
 export const objectExists = async (key: string) => {
+  debugLog("objectExists called", { key, bucket: bucket() })
   try {
-    await getClient().send(
+    const result = await getClient().send(
       new HeadObjectCommand({
         Bucket: bucket(),
         Key: key,
       })
     )
+    debugLog("objectExists success", { key, metadata: result.$metadata })
     return true
-  } catch {
+  } catch (error: any) {
+    debugLog("objectExists failed", {
+      key,
+      errorName: error.name,
+      errorMessage: error.message,
+      errorCode: error.$metadata?.httpStatusCode,
+    })
     return false
   }
 }
@@ -54,18 +64,31 @@ type UploadObjectInput = {
 }
 
 export const uploadObject = async ({ key, body, contentType, cacheControl }: UploadObjectInput) => {
-  await getClient().send(
-    new PutObjectCommand({
-      Bucket: bucket(),
-      Key: key,
-      Body: body,
-      ContentType: contentType,
-      CacheControl: cacheControl,
+  debugLog("uploadObject called", { key, bucket: bucket(), contentType, cacheControl, bodySize: body.length })
+  try {
+    const result = await getClient().send(
+      new PutObjectCommand({
+        Bucket: bucket(),
+        Key: key,
+        Body: body,
+        ContentType: contentType,
+        CacheControl: cacheControl,
+      })
+    )
+    debugLog("uploadObject success", { key, etag: result.ETag, metadata: result.$metadata })
+  } catch (error: any) {
+    debugLog("uploadObject failed", {
+      key,
+      errorName: error.name,
+      errorMessage: error.message,
     })
-  )
+    throw error
+  }
 }
 
 export const getPublicObjectUrl = (key: string) => {
   const baseUrl = getRequiredEnv("R2_PUBLIC_BASE_URL").replace(/\/$/, "")
-  return `${baseUrl}/${key}`
+  const url = `${baseUrl}/${key}`
+  debugLog("getPublicObjectUrl", { key, url })
+  return url
 }

@@ -5,6 +5,7 @@ declare namespace NodeJS {
     NEXT_PUBLIC_BASE_URL: string
     NEXT_PUBLIC_API_URL: string
     ENABLE_R2_STORAGE?: string
+    DEBUG_R2?: string
     R2_ENDPOINT?: string
     R2_REGION?: string
     R2_BUCKET?: string

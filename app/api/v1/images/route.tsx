@@ -5,6 +5,7 @@ import { ZodError } from "zod"
 import { templates } from "@/components/templates"
 import { FontFamily, FontWeight, getFontUrl, getFontsFromTemplate } from "@/lib/fonts"
 import { TemplateName, templateDefaults, templateSchema } from "@/lib/templates"
+import { debugLog } from "@/lib/storage/debug"
 import { buildImageObjectKey } from "@/lib/storage/object-key"
 import { getPublicObjectUrl, objectExists, uploadObject } from "@/lib/storage/r2"
 
@@ -138,21 +139,32 @@ const renderAndReturnDirectly = async (templateData: unknown) => {
 }
 
 const persistAndRespond = async (templateData: unknown, mode: ResponseMode) => {
+  debugLog("persistAndRespond started", { mode, isR2Enabled: isR2Enabled() })
   const parsedTemplate = templateSchema.parse(templateData)
   const key = buildImageObjectKey(parsedTemplate)
+  debugLog("persistAndRespond key generated", { key, templateName: parsedTemplate.name })
+
   const url = getPublicObjectUrl(key)
 
-  if (await objectExists(key)) {
+  const exists = await objectExists(key)
+  debugLog("persistAndRespond objectExists result", { key, exists })
+
+  if (exists) {
+    debugLog("persistAndRespond cache hit", { key, url })
     return imageSuccessResponse(url, key, true, mode)
   }
 
+  debugLog("persistAndRespond cache miss, generating image", { key })
   const imageBuffer = await renderImageBuffer(parsedTemplate)
+  debugLog("persistAndRespond image generated", { key, imageSize: imageBuffer.length })
+
   await uploadObject({
     key,
     body: imageBuffer,
     contentType: "image/png",
     cacheControl: OBJECT_CACHE_CONTROL,
   })
+  debugLog("persistAndRespond upload complete", { key })
 
   return imageSuccessResponse(url, key, false, mode)
 }
@@ -177,27 +189,38 @@ const handleError = (error: unknown) => {
 }
 
 export const GET = async (request: NextRequest) => {
+  const requestId = crypto.randomUUID()
+  debugLog("GET request received", { requestId, url: request.url, mode: parseResponseMode(request) })
   try {
     const templateData = toTemplateDataFromGet(request)
     if (!isR2Enabled()) {
+      debugLog("GET direct mode", { requestId })
       return await renderAndReturnDirectly(templateData)
     }
     const mode = parseResponseMode(request)
+    debugLog("GET R2 mode", { requestId, mode })
     return await persistAndRespond(templateData, mode)
   } catch (error) {
+    debugLog("GET error", { requestId, error: (error as Error).message })
     return handleError(error)
   }
 }
 
 export const POST = async (request: NextRequest) => {
+  const requestId = crypto.randomUUID()
+  debugLog("POST request received", { requestId, url: request.url, mode: parseResponseMode(request) })
   try {
     const body = await request.json()
+    debugLog("POST body parsed", { requestId, templateName: body.name })
     if (!isR2Enabled()) {
+      debugLog("POST direct mode", { requestId })
       return await renderAndReturnDirectly(body)
     }
     const mode = parseResponseMode(request)
+    debugLog("POST R2 mode", { requestId, mode })
     return await persistAndRespond(body, mode)
   } catch (error) {
+    debugLog("POST error", { requestId, error: (error as Error).message })
     return handleError(error)
   }
 }
