@@ -12,7 +12,7 @@ export const runtime = "nodejs"
 
 const CACHE_MAX_AGE = 60 * 60 * 24 * 7
 const API_CACHE_CONTROL = `public, max-age=0, s-maxage=${CACHE_MAX_AGE}, stale-while-revalidate=${CACHE_MAX_AGE}`
-const OBJECT_CACHE_CONTROL = `public, max-age=${CACHE_MAX_AGE}, immutable`
+const OBJECT_CACHE_CONTROL = `public, max-age=${CACHE_MAX_AGE}`
 
 const isR2Enabled = () => process.env.ENABLE_R2_STORAGE === "true"
 
@@ -40,7 +40,8 @@ const jsonResponse = (payload: Record<string, unknown>, status: number = 200) =>
 }
 
 const redirectResponse = (url: string) => {
-  return applyApiCacheHeader(Response.redirect(url, 302))
+  // 302 redirects should not have long-term caching
+  return Response.redirect(url, 302)
 }
 
 const imageSuccessResponse = (url: string, key: string, cached: boolean, mode: ResponseMode) => {
